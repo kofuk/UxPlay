@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Helper program to launch UxPlay
+
+if ! systemctl is-active --quiet avahi-daemon; then
+    systemctl start avahi-daemon || exit 1
+    sleep 2
+fi
+
+exec "@CMAKE_INSTALL_PREFIX@/lib/uxplay" "$@"

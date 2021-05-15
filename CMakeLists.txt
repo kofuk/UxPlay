@@ -4,6 +4,8 @@ project( uxplay )
 
 message( STATUS "Project name: " ${PROJECT_NAME} )
 
+set(CMAKE_CXX_STANDARD 11)
+
 include(GNUInstallDirs)
 
 set ( CMAKE_CXX_STANDARD 11 )
@@ -44,18 +46,24 @@ target_link_libraries( uxplay
                    airplay
 		   )
 
-install( TARGETS  uxplay RUNTIME DESTINATION bin )
+install( TARGETS  uxplay RUNTIME DESTINATION lib )
 install( FILES uxplay.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 )
-install( FILES README.md README.txt README.html LICENSE DESTINATION ${CMAKE_INSTALL_DOCDIR} ) 
-install( FILES lib/llhttp/LICENSE-MIT DESTINATION ${CMAKE_INSTALL_DOCDIR}/llhttp ) 
+# install( FILES README.md README.txt README.html LICENSE DESTINATION ${CMAKE_INSTALL_DOCDIR} ) 
+# install( FILES lib/llhttp/LICENSE-MIT DESTINATION ${CMAKE_INSTALL_DOCDIR}/llhttp ) 
 
 # uninstall target
-if(NOT TARGET uninstall)
-  configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-    IMMEDIATE @ONLY)
+# if(NOT TARGET uninstall)
+#   configure_file(
+#     "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
+#     "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+#     IMMEDIATE @ONLY)
 
-  add_custom_target(uninstall
-    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
-endif()
+#   add_custom_target(uninstall
+#     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+# endif()
+
+configure_file("${CMAKE_SOURCE_DIR}/uxplay.in" "${CMAKE_BINARY_DIR}/uxplay.sh")
+install(FILES "${CMAKE_BINARY_DIR}/uxplay.sh"
+  DESTINATION bin
+  RENAME uxplay
+  PERMISSIONS WORLD_READ OWNER_WRITE WORLD_EXECUTE)
